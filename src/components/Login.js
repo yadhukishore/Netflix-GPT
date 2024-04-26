@@ -16,8 +16,7 @@ const Login = () => {
   };
   const handleButtonClick = (e) => {
     //Validate form data
-    console.log("Email",email.current.value);
-    console.log("PAssW",password.current.value);
+
    if(isSiginInForm){
     const msg = checkValidData(email.current.value,password.current.value);
     setErrorMessage(msg);
@@ -26,7 +25,7 @@ const Login = () => {
     signInWithEmailAndPassword(auth,email.current.value,password.current.value)
   .then((userCredential) => {
     const user = userCredential.user;
-   console.log(user);
+
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -35,7 +34,7 @@ const Login = () => {
   });
 
    }else{
-    console.log("Name:",name.current.value);
+
     const msg = checkValidData(email.current.value,password.current.value,name.current.value);
     setErrorMessage(msg);
     if(msg) return;
@@ -43,7 +42,7 @@ const Login = () => {
     createUserWithEmailAndPassword(auth, email.current.value,password.current.value,name.current.value)
   .then((userCredential) => {
     const user = userCredential.user;
-    console.log(user);
+  
   })
   .catch((error) => {
     const errorCode = error.code;
