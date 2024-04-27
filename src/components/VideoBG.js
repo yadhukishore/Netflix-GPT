@@ -24,7 +24,7 @@ const VideoBG = ({ movieId }) => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
-          <div className="absolute bottom-4 left-4 z-10">
+          <div className="absolute right-5 bottom-48 z-200">
             <button
               onClick={toggleMute}
               className="bg-gray-800 bg-opacity-50 text-white px-4 py-2 rounded-md hover:bg-opacity-70 transition duration-300"
