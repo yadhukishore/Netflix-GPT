@@ -6,7 +6,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
-import { Face_Icon, LOGO } from "../utils/constants";
+import { Face_Icon, LOGO, SUPPORTED_LANGUAGES } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/gptSlice";
+import { changeLanguage } from "../utils/configSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -20,12 +22,12 @@ const Header = () => {
       });
   };
   useEffect(() => {
-  const unsubscribe  = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         //When User Sign'sUp for 1st time/ Also Sign-In this will be called
         const { uid, email, name } = user;
         dispatch(addUser({ uid: uid, email: email, name: name }));
-        navigate("/browse")
+        navigate("/browse");
       } else {
         // User is signed out
         dispatch(removeUser());
@@ -34,24 +36,35 @@ const Header = () => {
     });
 
     //Unsubscribe when componets unmounds
-    return()=>unsubscribe();
+    return () => unsubscribe();
   }, []);
+  const handleGptSearchClick = () => {
+    dispatch(toggleGptSearchView());
+  };
+  const handleLangchange=(e)=>{
+    dispatch(changeLanguage(e.target.value))
+  }
 
   return (
     <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-10 w-screen flex justify-between">
-      <img
-        className="w-44"
-        src={LOGO}
-        alt="Logo-NetFlix"
-      />
+      <img className="w-44" src={LOGO} alt="Logo-NetFlix" />
 
       {user && (
         <div className="flex p-2">
-          <img
-            className="w-12 h-12 p-2"
-            alt="userIcone"
-            src={Face_Icon}
-          />
+          <select className="p-2 m-2 bg-gray-700 text-white rounded-md" onChange={handleLangchange}>
+            {SUPPORTED_LANGUAGES.map((lang) => (
+              <option key={lang.id} value={lang.id}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handleGptSearchClick}
+            className="py-2 px-4 m-2 bg-indigo-800 text-white rounded-md my-2"
+          >
+            AI Search
+          </button>
+          <img className="w-12 h-12 p-2" alt="userIcone" src={Face_Icon} />
           <button
             className="text-lg text-white rounded-lg py-0"
             onClick={handleSignOut}

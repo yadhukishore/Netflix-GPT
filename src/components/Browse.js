@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
 import Header from "./Header";
 import useNowPlayingMovies from "../customHooks/useNowPlayingMovies";
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import usePopularMovies from "../customHooks/usePopularMovies";
 import useTopRatedMovies from "../customHooks/useTopRatedMovies";
+import { useSelector } from "react-redux";
+import GptSearch from "./GptSearch";
 
 const Browse = () => {
-
+const showGptSearch = useSelector((store)=>store.gpt.showGptSearch);
  useNowPlayingMovies();
  usePopularMovies();
  useTopRatedMovies();
@@ -16,8 +17,15 @@ const Browse = () => {
   return (
     <div>
       <Header />
-      <MainContainer/>
-      <SecondaryContainer/>
+      {
+        showGptSearch?(<GptSearch/>):(
+         <>
+          <MainContainer/>
+          <SecondaryContainer/>
+          </>
+         )
+      }
+      
       {/* 
       Main Container
        -video bg
